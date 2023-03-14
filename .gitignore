@@ -1,23 +1,48 @@
-# Compiled class file
-*.class
+import java.util.Scanner;
 
-# Log file
-*.log
+public class OnlineShop {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
-# BlueJ files
-*.ctxt
+        // Define products and their prices
+        String[] products = {"Keyboard", "Mouse", "Monitor"};
+        double[] prices = {49.99, 19.99, 99.99};
+        int[] stocks = {20, 20, 20};
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+        // Ask user to choose a product and input quantity
+        System.out.println("Welcome to our online shop!");
+        System.out.println("Please choose a product:");
+        for (int i = 0; i < products.length; i++) {
+            System.out.printf("%d. %s - $%.2f (%d in stock)%n", i+1, products[i], prices[i], stocks[i]);
+        }
+        int choice = scanner.nextInt();
+        System.out.printf("You chose: %s%n", products[choice-1]);
+        System.out.println("How many do you want to buy?");
+        int quantity = scanner.nextInt();
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+        // Check if product is in stock
+        if (quantity > stocks[choice-1]) {
+            System.out.println("Out of stock!");
+            System.exit(0);
+        }
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+        // Calculate total price and display invoice
+        double total = prices[choice-1] * quantity;
+        System.out.printf("Invoice:%nProduct: %s%nPrice: $%.2f%nQuantity: %d%nTotal price: $%.2f%n", 
+            products[choice-1], prices[choice-1], quantity, total);
+
+        // Ask user to input money and calculate change
+        System.out.println("Please input your payment:");
+        double payment = scanner.nextDouble();
+        if (payment < total) {
+            System.out.println("Not enough money!");
+            System.exit(0);
+        }
+        double change = payment - total;
+        System.out.printf("Thank you for shopping with us!%nYour change: $%.2f%n", change);
+
+        // Update stock
+        stocks[choice-1] -= quantity;
+        System.out.printf("%s stock updated: %d%n", products[choice-1], stocks[choice-1]);
+    }
+}
